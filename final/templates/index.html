@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Data Enrichment</title>
+    <!-- Link to the CSS file in the static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- FontAwesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <h1>Company Data Enrichment</h1>
+    </header>
+    <main>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="choice">Choose an option:</label>
+            <div class="options">
+                <input type="radio" id="single" name="choice" value="single" checked>
+                <label for="single">
+                    <i class="fas fa-user"></i> Enter a single company name
+                </label>
+                <input type="radio" id="file" name="choice" value="file">
+                <label for="file">
+                    <i class="fas fa-file-upload"></i> Upload a file
+                </label>
+            </div>
+
+            <div id="single-input">
+                <label for="company_name">Company Name:</label>
+                <input type="text" id="company_name" name="company_name" placeholder="Enter company name">
+            </div>
+
+            <div id="file-input" style="display:none;">
+                <label for="file">Upload File:</label>
+                <input type="file" id="file" name="file" accept=".csv, .xlsx">
+            </div>
+
+            <button type="submit" id="submit-button">
+                <i class="fas fa-paper-plane"></i> Submit
+            </button>
+        </form>
+
+        <div id="loading-spinner" style="display:none;">
+            <p>Processing your request...</p>
+            <div class="spinner"></div>
+        </div>
+
+        {% if single_company_details %}
+        <section id="company-details">
+            <div class="details-card">
+                <h2>Company Details</h2>
+                <ul>
+                    {% for key, value in single_company_details.items() %}
+                    <li>
+                        <span class="icon">
+                            {% if key == "website" %}
+                                <i class="fas fa-globe"></i>
+                            {% elif key == "industry" %}
+                                <i class="fas fa-briefcase"></i>
+                            {% elif key == "company_size" %}
+                                <i class="fas fa-users"></i>
+                            {% elif key == "headquarters" %}
+                                <i class="fas fa-map-marker-alt"></i>
+                            {% elif key == "type" %}
+                                <i class="fas fa-building"></i>
+                            {% elif key == "founded" %}
+                                <i class="fas fa-calendar-alt"></i>
+                            {% elif key == "specialties" %}
+                                <i class="fas fa-star"></i>
+                            {% elif key == "LinkedIn" %}
+                                <i class="fab fa-linkedin"></i>
+                            {% else %}
+                                <i class="fas fa-info-circle"></i>
+                            {% endif %}
+                        </span>
+                        <strong>{{ key }}:</strong> {{ value }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+        
+        {% endif %}
+
+        {% if error_message %}
+        <p class="error">{{ error_message }}</p>
+        {% endif %}
+
+        {% if output_file %}
+        <a href="{{ output_file }}" class="download-button">
+            <i class="fas fa-download"></i> Download Processed File
+        </a>
+        {% endif %}
+    </main>
+    <footer>
+        <p>© 2024 Company Data Enrichment App</p>
+    </footer>
+    <script>
+        const singleInput = document.getElementById("single-input");
+        const fileInput = document.getElementById("file-input");
+        const loadingSpinner = document.getElementById("loading-spinner");
+        const submitButton = document.getElementById("submit-button");
+
+        document.getElementsByName("choice").forEach(option => {
+            option.addEventListener("change", () => {
+                if (option.value === "single") {
+                    singleInput.style.display = "block";
+                    fileInput.style.display = "none";
+                } else if (option.value === "file") {
+                    singleInput.style.display = "none";
+                    fileInput.style.display = "block";
+                }
+            });
+        });
+
+        submitButton.addEventListener("click", () => {
+            loadingSpinner.style.display = "block";
+        });
+    </script>
+</body>
+</html>

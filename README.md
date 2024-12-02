@@ -1,88 +1,177 @@
-# Project_4_company_data
-Retrieve company data for Asset managers (company project)
+# Project 4: LinkedIn-Based Company Data Enrichment
 
-# Project Proposal: LinkedIn-Based Company Data Enrichment
+## Overview
+This project automates the process of enriching company data by retrieving detailed information from LinkedIn profiles, such as:
+- Website
+- Industry
+- Company size
+- Headquarters
+- Type
+- Year founded
+- Specialties
+
+The solution is designed to save time for investment professionals and researchers by processing large datasets of company names in a CSV or Excel file, extracting the required data, and providing the results in a structured format.
+
+---
 
 ## The Big Idea
-The primary goal of this project is to develop a Python script that automates the process of enriching company data by extracting LinkedIn profiles and relevant company details such as website, industry, company size, headquarters, type, year founded, and specialties. The project addresses the challenge of manually searching for and collecting such data, particularly for investment firms or companies listed in an Excel spreadsheet.
+Manually searching for company details on LinkedIn is time-consuming and error-prone. This project solves the problem by:
+1. Automating LinkedIn profile searches using Google.
+2. Scraping key company details directly from LinkedIn pages.
+3. Compiling all the data into a single, downloadable file.
 
 ### Minimum Viable Product (MVP)
-- A script that:
-  - Reads a list of company names from an Excel file.
-  - Performs a Google search to identify LinkedIn URLs for each company.
-  - Scrapes company details from LinkedIn pages and populates the corresponding rows in the Excel file.
+- Upload a file (CSV/Excel) with company names or enter a single asset manager name for which you want to retrieve information.
+- Retrieve LinkedIn URLs and company details for each name.
+- Download an updated file with the enriched data.
 
 ### Stretch Goals
-- Add error logging and reporting to handle skipped rows or failed attempts.
-- Implement parallel processing or asynchronous execution to reduce runtime for example.
-- Save document across the search.
+- **Improved performance**: Use asynchronous execution or parallel processing to handle large datasets.
+- **Error reporting**: Log failed attempts and skipped rows in a separate file.
+- **Real-time updates**: Save intermediate progress during the search process.
 
 ---
 
 ## Learning Objectives
-- Gain hands-on experience with web scraping and data enrichment using Python.
-- Learn to handle rate-limiting and error recovery in automated workflows.
-- Understand how to structure reusable, maintainable Python scripts for real-world applications.
-
-### Individual Goals
-- Improve skills in using Python libraries for web scraping (e.g., `requests`, `BeautifulSoup`).
-- Learn about data manipulation with `pandas` and Excel integration.
-- Enhance knowledge of exception handling, logging, and debugging in Python.
+- **Python Web Scraping**: Master the use of `requests`, `BeautifulSoup`, and `googlesearch`.
+- **Data Processing**: Gain experience manipulating and processing data with `pandas`.
+- **Error Handling**: Learn to implement robust exception handling and logging.
+- **Web Development**: Understand how to build a user-friendly interface using Flask.
 
 ---
 
-## Implementation Plan
-### Technology Stack
-- **Libraries** such as `requests`, `pandas`, `BeautifulSoup`, `googlesearch`,... may be useful
+## Features
+### Current Features
+- File upload support for CSV and Excel files.
+- Single company search.
+- Validation to ensure the input file contains a `Company` column.
+- Automated Google search to find LinkedIn URLs.
+- Scraping of key company details from LinkedIn pages.
+- Downloadable enriched file in Excel format.
 
-
-### Plan of Action
-1. Set up the project repository and ensure all dependencies are installed.
-2. Break down the script into smaller modules (e.g., Google search, request handling, data parsing).
-3. Implement a proof-of-concept for scraping LinkedIn data using static URLs.
-4. Add functionality for searching LinkedIn URLs through Google.
-5. Develop error handling and rate-limiting mechanisms.
-6. Test the script with sample data and refine the parsing logic.
-
-### Uncertainty Areas
-- Whether LinkedIn's structure or Google’s search results format will change during the project. 
-- How much data can be retrieved, can it be solved with a time sleep?
-- Reliance on scraping (as opposed to using APIs) may introduce limitations.
+### Potential future Planned Enhancements
+- **Data Visualization**: Add a dashboard for summarizing the results (e.g., industries, company sizes).
+- **Asynchronous Scraping**: Reduce runtime for large datasets.
 
 ---
 
-## Project Schedule
-### Week 1
-- Define project scope and set up the repository.
-- Review the provided codebase and identify areas for improvement.
+## Usage Instructions
+### Prerequisites
+- Python 3.9+
+- Required libraries: Install them with:
+  ```bash
+  pip install -r requirements.txt
 
-### Week 2
-- Implement Google search functionality and integrate it with LinkedIn scraping.
-- Add basic error handling and logging.
+# Running the App
 
-### Week 3
-- Expand the scraping logic to extract additional company details.
-- Test the script on a larger dataset.
+## Clone this repository:
+```bash
+git clone https://github.com/yourusername/Project_4_company_data.git
+cd Project_4_company_data
+```
 
-### Week 4
-- Optimize the script for performance (e.g., rate-limiting, retries).
-- Add a mechanism to save intermediate progress.
-- Complete documentation and polish the final deliverable.
-- Prepare the final submission, including reflections on challenges and solutions.
+## Start the Flask app:
+```bash
+python app.py
+```
 
+## Open your browser and navigate to:
+```arduino
+http://127.0.0.1:5000
+```
+
+## Steps to Use the App:
+0. Choose whether you want to search a single company name or Upload a file with many names.
+1. Search the company name or Upload a file (CSV or Excel) with a column labeled **Company** containing the company names.
+2. Click **"Submit"** to start the data enrichment process.
+3. Download the enriched file with LinkedIn data.
 
 ---
 
-## Risks and Limitations
-- **Biggest Risk**: Rate-limiting or IP bans from Google or LinkedIn due to frequent requests. This could halt data collection.
-- **Mitigation**: Implement randomized delays and pauses, and explore proxies or VPNs for distributed requests.
-- **Limitations**:
-  - Web scraping is fragile and may break if LinkedIn’s structure changes.
-  - Dependency on search results may lead to inconsistent data quality.
+# Implementation Details
+
+## Workflow
+
+### File Upload:
+- Users upload a file containing company names.
+- The app validates the file format and checks for the required **Company** column.
+
+### Google Search:
+- The app searches for LinkedIn URLs using the `googlesearch` library.
+- The first relevant LinkedIn URL is identified for each company.
+
+### Data Scraping:
+- The app fetches LinkedIn pages and extracts data using **BeautifulSoup**.
+- Extracted fields include:
+  - Website
+  - Industry
+  - Employees
+  - Headquarters
+  - Type
+  - Year Founded
+  - Specialties
+
+### Result Compilation:
+- All data is saved in a structured Excel file, ready for download.
 
 ---
 
-## Additional Course Content
-- **Web Scraping Best Practices**: Strategies to avoid detection and ensure ethical scraping.
-- **Asynchronous Programming**: To improve the runtime efficiency of the script.
-- **API Integration**: Using APIs like LinkedIn’s to reduce reliance on scraping.
+# Results
+
+## Input Example
+A sample input file (`companies.csv`):
+
+| Company    |
+|------------|
+| BlackRock  |
+| Vanguard   |
+| State Street |
+
+## Output Example
+The resulting enriched file (`company_info.xlsx`):
+
+| Company    | LinkedIn URL                  | Website         | Industry    | Employees | Headquarters     | Type     | Founded |
+|------------|-------------------------------|-----------------|-------------|-----------|------------------|----------|---------|
+| BlackRock  | linkedin.com/company/blackrock | blackrock.com  | Finance     | 10,000+   | New York, USA    | Private  | 1988    |
+| Vanguard   | linkedin.com/company/vanguard  | vanguard.com   | Investment  | 20,000+   | Valley Forge, USA| Private  | 1975    |
+
+---
+
+# Project Schedule
+
+| Week | Goals                                                     |
+|------|-----------------------------------------------------------|
+| 1    | Define project scope and set up repository.               |
+| 2    | Implement Google search integration and LinkedIn scraping.|
+| 3    | Add error handling, validation, and intermediate result saving. |
+| 4    | Optimize performance, polish the UI, and finalize the documentation. |
+
+---
+
+# Risks and Limitations
+
+## Risks
+- **Rate-Limiting**: Excessive requests to Google or LinkedIn may result in IP bans.
+  - **Mitigation**: Add random delays between requests and limit scraping frequency.
+- **Data Quality**: LinkedIn’s page structure may change, breaking the scraper.
+  - **Mitigation**: Regularly update the scraping logic.
+
+## Limitations
+- Web scraping is inherently fragile and less reliable than API-based solutions.
+- LinkedIn may restrict access to detailed data due to security measures.
+
+---
+
+# Additional Features for the Future
+- **Dynamic Dashboard**: Use tools like Plotly or Dash to visualize enriched data.
+- **API Integration**: Replace scraping with LinkedIn's official API for better reliability.
+- **File Format Flexibility**: Support additional input/output formats (e.g., JSON).
+
+---
+
+# Attribution
+This project uses the following tools and libraries:
+- **Flask**: [Flask Documentation](https://flask.palletsprojects.com/)
+- **pandas**: [pandas Documentation](https://pandas.pydata.org/)
+- **BeautifulSoup**: [BeautifulSoup Documentation](https://www.crummy.com/software/BeautifulSoup/)
+- **Google Search API**: [Google Search](https://developers.google.com/custom-search/)
